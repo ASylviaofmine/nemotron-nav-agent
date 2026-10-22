@@ -31,6 +31,8 @@ minute, showing A\* finding the route, the baseline and the tuned run side
 by side with the error plotted live, the map suite, and the model's own
 diagnosis next to the measurement that proved it right.
 
+![the supervision loop, side by side](docs/submission.gif)
+
 Built for the [Nebius Global AI Hackathon](https://nebiusglobalaihackathon.devpost.com)
 (Physical AI track). The inference calls in this project run on **Nebius
 Token Factory** against an **NVIDIA Nemotron** model, as the rules require.

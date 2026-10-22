@@ -15,5 +15,11 @@ docs/*.mp4
 results/
 *.log
 .DS_Store
-.idea/
 .vscode/
+
+# PyCharm. The per-machine .idea/ folder stays out of the repository, but
+# the shared run configurations in .run/ are committed on purpose: they
+# are the "how do I run this" documentation, and they work in any IDE
+# that reads .run/*.xml.
+.idea/
+!.run/

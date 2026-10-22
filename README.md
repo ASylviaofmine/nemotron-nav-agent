@@ -136,6 +136,31 @@ cd nemotron-nav-agent
 pip install numpy pillow          # the core needs nothing else
 ```
 
+### In PyCharm
+
+Open the folder `nemotron-nav-agent` (**File → Open**, pick the directory
+itself, not the parent). The project ships with six run configurations in
+`.run/`, so they appear in the run dropdown straight away:
+
+| Configuration | What it does |
+|---|---|
+| `run: plan + track` | `main.py run` — plan, track, print the metrics |
+| `run: record demo GIF` | `main.py run --gif` — write `docs/demo.gif` |
+| `tune: let the model tune the tracker` | `main.py tune` — the supervision loop |
+| `evaluate: the full evaluation` | `main.py evaluate` — the three tables |
+| `selftest` | `tools/selftest.py` — all the checks |
+| `demo: Gradio web app` | `app.py` — the web demo |
+
+The interpreter is a virtualenv in the project folder, created with
+`--system-site-packages` so numpy, Pillow and gradio are already there
+without a network install. If you open the project on a different machine,
+point the interpreter at any Python 3.11+ that has numpy and Pillow.
+
+> pygame is **not** required. It is used only by the interactive window in
+> `src/viewer.py`. The GIF recorder and the web demo share the numpy
+> renderer in `src/render.py`, so the video works with numpy and Pillow
+> alone.
+
 ### The four commands
 
 ```bash

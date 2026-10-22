@@ -39,12 +39,29 @@ def cmd_run(args):
     print(f"time            : {m['time_s']:.2f} s")
 
     if args.gif:
-        from src.viewer import record_gif
+        from src.render import record_gif
         frames, nbytes = record_gif(world, args.out)
         print(f"GIF: {args.out}  {frames} frames  {nbytes / 1024 / 1024:.2f} MB")
     elif not args.no_view:
-        from src.viewer import play
-        play(world)
+        # The live window needs pygame. It is the one optional dependency in
+        # this project, so a missing pygame must degrade to a note, not a
+        # traceback -- otherwise "python main.py run" fails on a machine
+        # that has everything the simulation itself needs.
+        #
+        # The import has to be probed here rather than inside src/viewer.py:
+        # that module imports cleanly without pygame and only needs it when
+        # the window is actually opened, so the ImportError would surface
+        # later than it is caught here.
+        try:
+            import pygame  # noqa: F401
+        except ImportError:
+            print("\npygame is not installed, so the live window is unavailable. "
+                  "Nothing else is affected: the run above is complete, and "
+                  "'python main.py run --gif' records the video with numpy + "
+                  "Pillow alone.")
+        else:
+            from src.viewer import play
+            play(world)
 
 
 def cmd_tune(args):

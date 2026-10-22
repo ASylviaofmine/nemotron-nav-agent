@@ -1,0 +1,11 @@
+# Core numerics -- required for the simulator, the metrics and the benchmark.
+numpy>=1.24
+
+# Visualisation. Optional: the demo (app.py) and the GIF recorder need
+# pygame and Pillow; the core pipeline, the evaluation and the self-test
+# run without them.
+pygame>=2.1
+Pillow>=10.0
+
+# The web demo. Optional.
+gradio>=4.0

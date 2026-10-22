@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Recorded artefacts. The demo GIF is committed on purpose -- the video
+# is part of the submission, and a judge should be able to see the run
+# without installing anything. Regenerate with: python main.py run --gif
+docs/*.mp4
+!docs/demo.gif
+
+# Evaluation output
+results/
+*.log
+.DS_Store
+.idea/
+.vscode/

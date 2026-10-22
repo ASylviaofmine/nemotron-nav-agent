@@ -26,6 +26,11 @@ natural-language task
    keep the change only if the measured numbers improved
 ```
 
+**Video:** [watch it on YouTube](https://youtu.be/YOUR_VIDEO_ID) — about a
+minute, showing A\* finding the route, the baseline and the tuned run side
+by side with the error plotted live, the map suite, and the model's own
+diagnosis next to the measurement that proved it right.
+
 Built for the [Nebius Global AI Hackathon](https://nebiusglobalaihackathon.devpost.com)
 (Physical AI track). The inference calls in this project run on **Nebius
 Token Factory** against an **NVIDIA Nemotron** model, as the rules require.
@@ -116,6 +121,21 @@ filtered to keep only solvable ones).
 
 Reproduce with `python tools/agent_eval.py`.
 
+### The video
+
+`tools/make_demo.py` renders the whole pipeline as a video — A* finding the
+route, the baseline and the tuned run side by side with the cross-track error
+plotted live, the map suite, and the model's own diagnosis next to the
+measurement that proved it right.
+
+```bash
+pip install opencv-python
+python tools/make_demo.py --gif docs/submission.gif
+```
+
+It writes `docs/submission.mp4` (about a minute) and, with `--gif`, a GIF for
+the README.
+
 > **A note on honesty about these numbers.** The tables above were produced
 > with the offline mock (`--mock`), where the *pipeline and every measured
 > quantity are real* but the *suggestions come from a fixed rule*. That
@@ -204,7 +224,6 @@ exchange.
 ```bash
 python tools/selftest.py
 ```
-
 Checks that `src/metrics.py` and the independent implementation in
 `tools/benchmark_ref.py` agree bit for bit; that the cross-track definition
 is the right one; that the vectorised and naive implementations are
@@ -233,6 +252,8 @@ tools/
   selftest.py            the self-test
   agent_eval.py          the evaluation, three tables
   benchmark_ref.py       independent metric implementation, for cross-checking
+  make_demo.py           renders the submission video
+  publish.sh             one-command GitHub publish
 ```
 
 ---

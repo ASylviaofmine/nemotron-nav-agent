@@ -1,106 +1,78 @@
 # 提交清单 — 一步步照着做
 
-距离截止（**2026-10-31 01:00 GMT+8**）还有 7 天多，不慌。
-代码、视频、文档都已就绪，**只差把仓库传上去 + 录视频 + 填表**。
+> **当前状态（2026-10-23 20:45，距截止 7 天 4 小时）**
+>
+> | # | 事项 | 状态 |
+> |---|---|---|
+> | 1 | GitHub 公开仓库 | ✅ **已完成** — public / MIT / 35 个文件 |
+> | 2 | 仓库 Description + Topics | ⬜ **待做（5 分钟）** |
+> | 3 | YouTube 视频 | ⬜ **待做（5-30 分钟）** ← 硬性要求 |
+> | 4 | 填 Devpost 表单 + 点 Submit | ⬜ **待做（30 分钟）** |
+> | 5 | live 数字（可选） | ⬜ 有 API key 再做 |
 
 ---
 
-## 第 1 步：建 GitHub 仓库（2 分钟，只能你做）
+## 一句话回答"要上传什么到比赛"
 
-打开 **https://github.com/new**
+Devpost 那个网页**不是用来写代码的**，是**填表交作业**的。
+你只需要交 **4 个链接 + 3 段文字**：
 
-| 填什么 | 值 |
-|---|---|
-| Owner | `ASylviaofmine` |
-| Repository name | `nemotron-nav-agent` |
-| Description | `A wheeled robot that plans with A* and tracks with a proportional controller, supervised by an NVIDIA Nemotron model on Nebius Token Factory.` |
-| Visibility | **Public** ← 必须，否则评委打不开 |
-| README / .gitignore / license | **全部不要勾** ← 勾了会和本地冲突 |
+| 表单字段 | 填什么 | 状态 |
+|---|---|---|
+| **Repository URL** | `https://github.com/ASylviaofmine/nemotron-nav-agent` | ✅ 有了 |
+| **Video URL** | 你的 YouTube 链接 | ⬜ 要先录视频 |
+| **Demo URL** | **留空** | ✅ 不用填（Physical AI 赛道明确不要求） |
+| **Track** | `Physical AI` | ✅ |
+| **Project description** | 长文，草稿在 `SUBMISSION_DRAFT.md` | ✅ 复制粘贴 |
+| **Nebius/NVIDIA feedback** | 中等长度，草稿在 `SUBMISSION_DRAFT.md` | ✅ 复制粘贴 |
+| **Team** | `ASylviaofmine` | ✅ |
 
-点 **Create repository**。
-
-> 为什么这一步必须你来：建仓库要调用 GitHub API，需要一个 Personal Access
-> Token。这台机器上没有存 token，GitHub 连接器也没连上。你的 SSH 密钥只能
-> 推送，**不能创建仓库**。
+**最后点 Submit 才算提交。** 不点 = 没交。
 
 ---
 
-## 第 2 步：推送（我来做，你告诉我一声就行）
+## 第 1 步：建 GitHub 仓库 ✅ 已完成
 
-仓库建好后跟我说一声，我跑：
+仓库已存在且推送完毕。如果之后要改 Description / Topics，见第 3 步。
 
-```bash
-bash tools/publish.sh
+---
+
+## 第 2 步：录 YouTube 视频
+
+**素材已做好**：`docs/submission.mp4`，81 秒，5 个场景。
+
+最省事的方式（**不需要出镜、不需要录屏**）：
+1. 打开 https://studio.youtube.com
+2. 上传 `docs/submission.mp4`
+3. **可见性选 Public**（关键）
+4. 发布
+
+完整的录法、逐分镜解说词、YouTube 描述栏文案：
+**看 `docs/VIDEO_SCRIPT.md`**
+
+规则硬性要求：公开可见、< 3 分钟、**≥ 1 分钟展示关键模块动作**（你的是 81 秒实拍仿真画面，达标）。
+
+---
+
+## 第 3 步：填仓库 Description + Topics（5 分钟）
+
+打开仓库页 → 右边栏 **About** 旁的齿轮：
+
+**Description**
+```
+A wheeled robot that plans with A* and tracks with a proportional controller, supervised by an NVIDIA Nemotron model on Nebius Token Factory.
 ```
 
-脚本会设好 remote、推 `master` 分支、并给你链接。
-
----
-
-## 第 3 步：给仓库补两样东西（1 分钟）
-
-在 GitHub 仓库页面：
-
-1. 右边栏 **About** → 齿轮图标 → 填 Description（和上面一样）→ **Topics** 加：
-   `nvidia` `nebius` `nemotron` `robotics` `physical-ai` `python`
-2. 右边栏 **Releases** → 不用管
-
-> Topics 和 Description 是评委**第一眼**看到的搜索关键词，别省。
-
----
-
-## 第 4 步：录 YouTube 视频（30 分钟）
-
-素材已经做好：`docs/submission.mp4`（1000×700，**67 秒**，5 个场景）。
-
-规则要求：
-- 公开可见（不能是"不公开"）
-- **少于 3 分钟**
-- Physical AI 赛道：**至少 1 分钟**要展示关键模块在动 ← 67 秒正好达标
-
-### 怎么录
-
-**方法 A（最快，推荐）**：浏览器打开这个 GIF，录屏。
-
+**Topics**（逐个点进去搜）
 ```
-docs/submission.gif
+nvidia  nebius  nemotron  robotics  physical-ai  python
 ```
 
-用系统录屏（Win + Alt + R）录浏览器播放它的过程，1 分钟出头就够。
-建议同时**配一段英文解说**（念场景标题即可），
-或者加英文字幕 —— 规则要求"若非英文须提供英文字幕"。
-
-**方法 B**：把 `submission.mp4` 上传到 YouTube（设为"公开"），
-再在视频编辑器里加英文解说轨。
-
-### 解说词可以直接用（对应视频里的场景）
-
-> **Scene 1** — A* finds the route. Four-connected grid, Manhattan
-> heuristic, unit step cost. The wall in the middle has two gaps, so the
-> planner has to detour.
->
-> **Scene 2** — This is the core of the project. The same task, tracked
-> twice. On the left, the baseline parameters. On the right, the parameters
-> the model chose. The plot underneath each one is the measured cross-track
-> error, live. The red curve oscillates; the green one stays near the
-> floor.
->
-> **Scene 3** — The same loop over a seeded suite of maps. Every bar pair is
-> one map. It improves on all of them.
->
-> **Scene 4** — What the model actually says. A diagnosis, and a proposed
-> change — clamped, applied, re-run, and kept only if the measurement
-> improved.
->
-> **Scene 5** — The claim, and the check. The exhaustive sweep of all 125
-> parameter combinations involves no model at all, so it is an independent
-> reference rather than a restatement of what the agent did.
-
-录完把链接填到提交表和 README 顶部。
+这是评委**第一眼**看到的东西，也影响搜索权重。别省。
 
 ---
 
-## 第 5 步：填 Devpost 表单（30 分钟）
+## 第 4 步：填 Devpost 表单
 
 `docs/SUBMISSION_DRAFT.md` 里每个字段的英文草稿都写好了，直接复制。
 
@@ -112,14 +84,14 @@ docs/submission.gif
 | Repository URL | `https://github.com/ASylviaofmine/nemotron-nav-agent` |
 | Demo URL | **留空**（Physical AI 赛道明确不要求） |
 | Video URL | 你的 YouTube 链接 |
-| Nebius/NVIDIA feedback | 草稿里那段（写得很诚实，见下） |
-| Team | `ASylviaofmine`（个人参赛；想组队就现在加，队长才能按提交） |
+| Nebius/NVIDIA feedback | 草稿里那段 |
+| Team | `ASylviaofmine` |
 
 ### 关于 feedback 字段的写法
 
-我在草稿里**没有吹牛**。规则原文是"Provide feedback on Nebius Token
+草稿里**没有吹牛**。规则原文是"Provide feedback on Nebius Token
 Factory, AI Cloud and any NVIDIA tools"，所以实话最好。我写的是：
-模型 ID 在官方文档里拼写不一致（这是真事，值得吐槽）、
+模型 ID 在官方文档里拼写不一致（真事，值得吐槽）、
 模型真正帮上忙的地方是"把诊断说清楚"而不是最终数值、
 以及**诚实地说明没打败精心编写的启发式**——因为评估表里本来就有那一行。
 
@@ -127,7 +99,15 @@ Factory, AI Cloud and any NVIDIA tools"，所以实话最好。我写的是：
 
 ---
 
-## 第 6 步（可选但建议）：live 数字
+## 第 5 步：视频链接加回 README
+
+视频上传后，把链接发我，我改 README 顶部并推送
+（现在那里指向仓库内的文件，因为你的 YouTube 链接当时还不存在）。
+
+---
+
+
+## 第 6 步（可选）：live 数字
 
 拿到 `NEBIUS_API_KEY` 之后：
 

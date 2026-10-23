@@ -71,6 +71,30 @@ of the best of all 125 swept combinations, and on 10 of 10 maps in a
 seeded suite it improves on the baseline, with a worst-case improvement
 ratio of 2.08×.
 
+**Why this pattern is worth building.** Robot tuning is a search problem
+wearing a costume: today it is done by sweeping parameters, reading a
+table, and guessing which knob to turn next. The simulation is the cheap
+part; choosing the next candidate is the step that needs judgement. A model
+that has seen the measured error can name the dominant error source and
+propose the next candidate, and the simulator answers the only question
+that matters.
+
+The same loop against real hardware costs a physical trial per candidate,
+and there the value of the model is not "it found Kp = 12" but "it did not
+waste the next twenty trials on a parameter that was never going to help".
+The verification step does not change; only its cost does.
+
+I am deliberately not claiming the model beats a well-written heuristic —
+on this simulator the tuning knowledge is simple enough that a fixed rule
+gets most of the way, and the evaluation reports that control row so the
+distinction is visible rather than implied. The claim is narrower and
+defensible: **the model produces a useful diagnosis, and the framework
+keeps only the changes that measurably worked.** The interesting version
+is not more parameters but more *systems* — each additional controller,
+sensor model or failure mode adds error sources the engineer has not
+enumerated, which is exactly when "here are the metrics, what should I
+try next?" is worth more than a fixed table of prior experience.
+
 **What it is built on.** Python, numpy, and a Token Factory client written
 against the standard library (`urllib`) on purpose — one less package that
 can fail to install is one less risk. The project also runs offline: with

@@ -135,8 +135,8 @@ pip install opencv-python
 python tools/make_demo.py --gif docs/submission.gif
 ```
 
-It writes `docs/submission.mp4` (about a minute) and, with `--gif`, a GIF for
-the README.
+It writes `docs/submission.mp4` (about 80 seconds) and, with `--gif`, a GIF
+for the README.
 
 > **A note on honesty about these numbers.** The tables above were produced
 > with the offline mock (`--mock`), where the *pipeline and every measured
@@ -147,6 +147,48 @@ the README.
 > script without `--mock` once a `NEBIUS_API_KEY` is present. The
 > deterministic reference numbers (fixed baseline, exhaustive sweep, all
 > metrics) do not depend on the model and are reproducible offline today.
+
+---
+
+## What this pattern is actually for
+
+The pattern here — *an LLM proposes, the physical system disposes, and the
+measurement decides* — is not a trick for a hackathon demo. It is the shape
+that any real deployment of a learned controller needs, and the reason is
+specific:
+
+**Robot tuning is a search problem wearing a costume.** Today it is done by
+running a sweep, reading a table, and guessing which knob to turn next. That
+loop is slow because the *search direction* is the hard part, not the
+simulation — and simulating a candidate controller is cheap and instant,
+while choosing the next candidate is the step that needs judgement. A model
+that has seen the measured error can name the dominant error source and
+propose the next candidate; the simulator then answers the only question
+that matters.
+
+**The pattern scales to hardware where trials are expensive.** This project
+runs the loop against a simulator, so a wrong suggestion costs milliseconds.
+The same loop against a real robot costs a physical trial — and now the
+value of the model is not "it found Kp = 12", it is "it did not waste the
+next twenty trials on a parameter that was never going to help". The
+verification step does not change; only its cost does.
+
+**Where it does not help, and why that is stated.** On this simulator the
+tuning knowledge is simple enough that a fixed rule gets most of the way.
+The honest claim is therefore *not* "the model beat a good heuristic" — it
+is "the model produced a useful diagnosis, and the framework kept only the
+changes that measurably worked". The evaluation reports the no-model
+control precisely so that this distinction is visible rather than implied.
+
+**Where it would go next.** The framework is deliberately narrow — three
+parameters, one map family. The interesting version is the opposite of
+"add more parameters": more *systems*. Each additional system (a different
+controller, a different sensor model, a different failure mode) adds error
+sources the engineer has not enumerated, which is exactly the situation
+where "here are the metrics, what should I try next?" is worth more than a
+fixed table of prior experience. The `run_tuning(evaluate=...)` seam in
+`src/agent.py` exists for that: the loop does not know what it is tuning,
+only how to propose and how to verify.
 
 ---
 

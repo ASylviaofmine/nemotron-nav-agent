@@ -323,7 +323,8 @@ def scene_decide(n_frames):
             if not shown:
                 break
             panel_frame(img, draw, 40, y, W - 80, 150,
-                        f"round {j + 1}", f"measured: max cross-track {m['max_cross_track_m']:.4f} m, "
+                        f"round {j + 1}",
+                        f"measured: max cross-track {m['max_cross_track_m']:.4f} m, "
                         f"time {m['time_s']:.2f} s", BLUE)
             text(draw, (60, y + 62), '"' + advice["diagnosis"] + '"', INK, 15)
             ch = advice["changes"]
@@ -335,6 +336,22 @@ def scene_decide(n_frames):
                  "verified by re-running the simulation, not by asking the model",
                  MUTED, 12)
             y += 170
+
+        # Why the loop stopped: the error is already small, so there is
+        # nothing left worth changing.
+        if i > n_frames * 0.75:
+            last = rounds[-1][1]["max_cross_track_m"]
+            draw.rectangle([40, y + 10, W - 40, y + 92], fill=(252, 252, 250),
+                           outline=LINE)
+            draw.rectangle([40, y + 10, 44, y + 92], fill=GREEN)
+            text(draw, (60, y + 26),
+                 "Why the loop stopped", GREEN, 15, bold=True)
+            text(draw, (60, y + 52),
+                 f"the cross-track error is down to {last:.4f} m, which is inside the "
+                 f"waypoint tolerance --", INK, 14)
+            text(draw, (60, y + 72),
+                 "raising the heading gain further would cost time without buying "
+                 "accuracy, so the model proposes nothing.", INK, 14)
 
         frames.append(img.quantize(colors=128))
 
@@ -405,12 +422,62 @@ def scene_conclusion(n_frames):
 
 
 SCENES = [
-    ("plan", "A* plans the route", 0.20),
-    ("supervise", "Nemotron supervises the tracker", 0.50),
-    ("generalise", "It generalises", 0.18),
+    ("title", "Title card", 0.10),
+    ("plan", "A* plans the route", 0.18),
+    ("supervise", "Nemotron supervises the tracker", 0.44),
+    ("generalise", "It generalises", 0.16),
     ("decide", "What the model actually says", 0.12),
     ("conclusion", "The claim, and the check", 0.10),
 ]
+
+
+def scene_title(n_frames):
+    """Scene 0: the title card, so the video says what it is before it
+    shows anything."""
+    grid = make_map(10)
+    path = astar(grid, (1, 1), (8, 8))
+    world = {"grid": grid, "path": path, "traj": [(0.5, 0.5)], "thetas": [0.0],
+             "start": path[0], "goal": path[-1]}
+
+    # The text column is kept narrow enough that the map on the right
+    # never overlaps it, and the map is sized to fit its slot.
+    TEXT_W = 560
+    MAP_CELL = 30
+    map_side = 10 * MAP_CELL + 2 * MARGIN
+    map_x = W - map_side - 50
+
+    frames = []
+    for i in range(n_frames):
+        # The route draws itself in behind the title.
+        k = max(2, int((i + 1) / n_frames * len(path)) + 1)
+        w = dict(world)
+        w["path"] = path[:k]
+
+        img = Image.new("RGB", (W, H), BG)
+        draw = ImageDraw.Draw(img)
+        text(draw, (50, 130), "nemotron-nav-agent", INK, 38, bold=True)
+
+        y = 196
+        for line in ("A wheeled robot that plans with A* and tracks with a",
+                     "proportional controller, supervised by an NVIDIA Nemotron",
+                     "model on Nebius Token Factory."):
+            text(draw, (50, y), line, MUTED, 16)
+            y += 24
+
+        draw.line([(50, y + 14), (250, y + 14)], fill=BLUE, width=3)
+
+        y += 44
+        for line in ("The model does not drive the robot. It reads the measured",
+                     "tracking error and proposes the next parameter change; the",
+                     "simulator re-runs and keeps the change only if the numbers",
+                     "improved."):
+            text(draw, (50, y), line, INK, 15)
+            y += 22
+
+        img.paste(Image.fromarray(render(w, 1, cell=MAP_CELL, margin=MARGIN)),
+                  (map_x, 150))
+        frames.append(img.quantize(colors=128))
+    return frames
 
 
 def build(out_path, fps=20, verbose=True, also_gif=None):
@@ -425,16 +492,18 @@ def build(out_path, fps=20, verbose=True, also_gif=None):
     for name, _, share in SCENES:
         if verbose:
             print(f"  building scene: {name} ...", flush=True)
-        if name == "plan":
-            parts.append(scene_plan(240))
+        if name == "title":
+            parts.append(scene_title(120))
+        elif name == "plan":
+            parts.append(scene_plan(220))
         elif name == "supervise":
-            parts.append(scene_supervise(520))
+            parts.append(scene_supervise(700))
         elif name == "generalise":
-            parts.append(scene_generalise(240))
+            parts.append(scene_generalise(220))
         elif name == "decide":
             parts.append(scene_decide(200))
         else:
-            parts.append(scene_conclusion(140))
+            parts.append(scene_conclusion(160))
 
     frames = []
     for p in parts:

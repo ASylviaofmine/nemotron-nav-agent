@@ -256,7 +256,18 @@ tools/
   benchmark_ref.py       independent metric implementation, for cross-checking
   make_demo.py           renders the submission video
   publish.sh             one-command GitHub publish
+  _bootstrap.py          makes the project importable from any directory
 ```
+
+Every script can be run two ways — directly, or as a module:
+
+```bash
+python tools/selftest.py          # direct
+python -m tools.selftest          # as a module
+```
+
+Both work. The module form is the tidier one, because the project root is
+already on the path; the direct form is the friendlier one to type.
 
 ---
 

@@ -14,19 +14,14 @@ That pairing is the whole point of the project: the model proposes, the
 simulator disposes, and you can see both halves of that exchange.
 """
 
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from src.agent import NavAgent                                       # noqa: E402
-from src.controller import follow                                    # noqa: E402
-from src.grid import cell_to_world                                   # noqa: E402
-from src.metrics import measure_world                               # noqa: E402
-from src.nebius_client import TokenFactory                           # noqa: E402
-from src.planner import astar                                        # noqa: E402
-from src.render import render                                        # noqa: E402
-from src.simulation import make_map                                  # noqa: E402
+from src.agent import NavAgent
+from src.controller import follow
+from src.grid import cell_to_world
+from src.metrics import measure_world
+from src.nebius_client import TokenFactory
+from src.planner import astar
+from src.render import render
+from src.simulation import make_map
 
 
 def _world(grid, path, traj, thetas, k):

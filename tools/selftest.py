@@ -26,16 +26,25 @@ Run:
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Make the project importable when this file is run directly
+# ("python tools/selftest.py") rather than as a module
+# ("python -m tools.selftest"). The try/except keeps the import block at
+# the top of the file, which is what lets the editor resolve these
+# imports without flagging them.
+try:
+    from tools._bootstrap import ROOT  # noqa: F401
+except ImportError:                     # running as a loose script
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import numpy as np                                                    # noqa: E402
+import numpy as np
+from src.agent import NavAgent
+from src.benchmark import build_suite, is_connected
+from src.metrics import crosstrack_error, measure, dist_point_to_segment
+from src.nebius_client import TokenFactory
+from src.simulation import build_world
 
-from src.metrics import crosstrack_error, measure, dist_point_to_segment  # noqa: E402
-from src.simulation import build_world                                 # noqa: E402
-
-from benchmark_ref import evaluate as ref_evaluate                    # noqa: E402
-from benchmark_ref import make_map as ref_make_map                    # noqa: E402
+from tools.benchmark_ref import evaluate as ref_evaluate
+from tools.benchmark_ref import make_map as ref_make_map
 
 TOL = 1e-9
 ROUNDED_TOL = 1e-4          # src/metrics.py rounds to the README's precision
@@ -116,8 +125,6 @@ if not same:
 print()
 
 print("4. The agent loop is wired correctly (mock mode, no API calls)\n")
-from src.agent import NavAgent                                        # noqa: E402
-from src.nebius_client import TokenFactory                            # noqa: E402
 
 client = TokenFactory(mock=True)
 agent = NavAgent(client)
@@ -133,8 +140,6 @@ if not has_metrics:
 
 # And the map suite must be solvable -- otherwise the generalisation table
 # would be measuring nothing.
-from src.benchmark import build_suite, is_connected                  # noqa: E402
-
 suite = build_suite(n_random=4)
 all_connected = all(is_connected(g, (1, 1), (8, 8)) for _, g in suite)
 print(f"  {'PASS' if all_connected else 'FAIL'}  all {len(suite)} suite maps are solvable")

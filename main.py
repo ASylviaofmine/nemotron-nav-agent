@@ -18,12 +18,10 @@ import argparse
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from src.agent import NavAgent                                       # noqa: E402
-from src.metrics import measure                                      # noqa: E402
-from src.nebius_client import TokenFactory                           # noqa: E402
-from src.simulation import build_world, describe                     # noqa: E402
+from src.agent import NavAgent
+from src.metrics import measure
+from src.nebius_client import TokenFactory
+from src.simulation import build_world, describe
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -101,13 +99,20 @@ def cmd_evaluate(args):
     """Run the full evaluation and print the three tables."""
     import tools.agent_eval as ae
 
+    # agent_eval.py reads its options from argv. Rather than rewriting
+    # sys.argv -- which is global state and a trap for anything running
+    # in the same process -- the flags are passed through argv for the
+    # duration of the call and restored afterwards.
+    saved = sys.argv
+    sys.argv = ["agent_eval"]
     if args.mock:
-        sys.argv = ["agent_eval", "--mock"]
-    else:
-        sys.argv = ["agent_eval"]
+        sys.argv.append("--mock")
     if args.maps:
         sys.argv += ["--maps", str(args.maps)]
-    ae.main()
+    try:
+        ae.main()
+    finally:
+        sys.argv = saved
 
 
 def main():

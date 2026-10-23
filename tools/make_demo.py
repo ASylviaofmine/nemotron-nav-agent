@@ -27,19 +27,27 @@ import argparse
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Make the project importable when this file is run directly
+# ("python tools/make_demo.py") rather than as a module
+# ("python -m tools.make_demo"). The try/except keeps the import block at
+# the top of the file, which is what lets the editor resolve these
+# imports without flagging them.
+try:
+    from tools._bootstrap import ROOT  # noqa: F401
+except ImportError:                     # running as a loose script
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from PIL import Image, ImageDraw                                        # noqa: E402
+from PIL import Image, ImageDraw
 
-from src.agent import NavAgent                                         # noqa: E402
-from src.benchmark import BASE_PARAMS, HEURISTIC_PARAMS, build_suite, run_on_grid  # noqa: E402
-from src.controller import follow                                      # noqa: E402
-from src.grid import cell_to_world                                    # noqa: E402
-from src.metrics import crosstrack_error, measure_world                # noqa: E402
-from src.nebius_client import TokenFactory                             # noqa: E402
-from src.planner import astar                                          # noqa: E402
-from src.render import MARGIN, render, world_to_screen                 # noqa: E402
-from src.simulation import make_map                                    # noqa: E402
+from src.agent import NavAgent
+from src.benchmark import BASE_PARAMS, HEURISTIC_PARAMS, build_suite, run_on_grid
+from src.controller import follow
+from src.grid import cell_to_world
+from src.metrics import crosstrack_error, measure_world
+from src.nebius_client import TokenFactory
+from src.planner import astar
+from src.render import MARGIN, render, world_to_screen
+from src.simulation import make_map
 
 BASELINE = BASE_PARAMS
 TUNED = HEURISTIC_PARAMS

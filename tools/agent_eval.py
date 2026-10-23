@@ -32,13 +32,21 @@ import argparse
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Make the project importable when this file is run directly
+# ("python tools/agent_eval.py") rather than as a module
+# ("python -m tools.agent_eval"). The try/except keeps the import block at
+# the top of the file, which is what lets the editor resolve these
+# imports without flagging them.
+try:
+    from tools._bootstrap import ROOT  # noqa: F401
+except ImportError:                     # running as a loose script
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.agent import NavAgent                                       # noqa: E402
-from src.benchmark import BASE_PARAMS, build_suite, evaluate_suite, format_summary  # noqa: E402
-from src.metrics import measure                                       # noqa: E402
-from src.nebius_client import TokenFactory                            # noqa: E402
-from src.simulation import build_world                                # noqa: E402
+from src.agent import NavAgent
+from src.benchmark import BASE_PARAMS, build_suite, evaluate_suite, format_summary
+from src.metrics import measure
+from src.nebius_client import TokenFactory
+from src.simulation import build_world
 
 # The exhaustive reference set: 5 x 5 x 5 = 125 combinations.
 SWEEP = {

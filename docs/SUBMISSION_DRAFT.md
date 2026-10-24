@@ -5,7 +5,43 @@ the code already exists and the numbers are the ones the scripts print.
 
 ---
 
-## Team
+## Page 1 — Project overview
+
+### Project name
+*(60 characters max)*
+
+```
+nemotron-nav-agent
+```
+
+### Elevator pitch
+*(200 characters max — the one below is 185)*
+
+```
+A* plans the route, a proportional controller tracks it, and an NVIDIA Nemotron model on Nebius Token Factory supervises the controller's parameters, each change verified by re-running.
+```
+
+> Three things in one sentence: the classical stack, the model, and the
+> verification. If you want it shorter, this also fits at 182 characters:
+>
+> `A wheeled robot plans with A* and tracks with a proportional controller. An NVIDIA Nemotron model on Nebius Token Factory reads the measured error and proposes each parameter change.`
+
+### Thumbnail image
+
+**`docs/thumbnail.png`** in the repository — upload that file.
+
+It is the single most persuasive frame in the video: the baseline and the
+tuned run side by side, with the measured cross-track error plotted live
+under each one. It reads as *"0.0895 m versus 0.0233 m"* without a single
+word of explanation, which is exactly what a thumbnail has to do.
+
+*(Format: PNG. 1000×700, about 100 KB — well inside any upload limit.)*
+
+---
+
+## Page 2 — Project details
+
+### Team
 
 `ASylviaofmine` (solo). If you would rather submit as a team, add the
 members here before submitting — a team submission needs a designated
@@ -122,42 +158,117 @@ exists.
 
 ## What you used — Nebius and NVIDIA feedback
 
-This is a required field. Say what you actually used, honestly — including
-what was hard. Draft:
+> **This field is a judged prize on its own.** The hackathon lists
+> *"Most Valuable Feedback — $100 cash, 10 winners, NVIDIA swag pack"*, and
+> the rules say feedback entries are scored on **completeness, viability and
+> potential impact**. So this is not a box to tick. Write it as a standalone
+> piece of useful feedback that would help another builder — specific,
+> actionable, and honest about where the tools did and did not help.
+> That is also the version most likely to win the main prizes, because the
+> reviewers of this project are the same people who wrote the docs.
 
-> **Token Factory.** Used the OpenAI-compatible Chat Completions endpoint at
-> `api.tokenfactory.nebius.com/v1` with NVIDIA Nemotron models. The model
-> IDs are spelled inconsistently across Nebius's own documentation pages
-> (`nvidia/nemotron-3-super-120b-a12b` vs
-> `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` vs `nvidia/Nemotron-3.5-Super-VL`),
-> so the client queries `/models` at runtime and falls back through a list
-> of candidates on a 400 or 404. That fallback is the first thing I would
-> change if I were starting over — it cost more debugging time than the
-> rest of the client put together.
+Paste the draft below.
+
+---
+
+> **Token Factory — what worked**
 >
-> The model was genuinely useful for one thing: framing the diagnosis.
-> "Cross-track error dominates the residual; the heading gain is too low
-> for the requested speed" is a better starting point for a parameter
-> search than the raw metric list, and it is the part I would keep.
+> The OpenAI-compatible endpoint at `api.tokenfactory.nebius.com/v1` was
+> straightforward to integrate: standard `/chat/completions`, standard
+> bearer auth, and it accepted the same client code I already use for
+> OpenAI-compatible endpoints. My client is written against `urllib` from
+> the standard library, so the project has one less dependency that can
+> fail to install — which mattered more to me than it might sound, since I
+> wanted the repository to be reviewable before anyone had an account.
 >
-> What I would not claim: that the model beat a well-written heuristic.
-> That is why the evaluation reports a no-model control row. On this
-> simulator the tuning knowledge is simple enough that a fixed rule gets
-> most of the way, and the honest result is that the model's contribution
-> is the *diagnosis and the search direction*, not a large final margin.
-> The framework would earn its keep on a controller with more interacting
-> parameters than this one has.
+> The thing that made it genuinely useful was **not** the model being
+> clever. It was the model turning a metric dump into a sentence. My
+> agent hands it "max cross-track 0.0895 m, mean 0.0126 m, time 32.00 s"
+> and gets back *"cross-track error dominates the residual; the heading gain
+> is too low for the requested speed."* That is a **search direction**, not
+> a number, and it is the part I would keep even if the underlying model
+> were swapped tomorrow.
 >
-> **AI Cloud.** Not used. The Physical AI track does not require it, and
-> the project's requirement is satisfied by the runtime Token Factory call
-> rather than by deployment. Serverless Jobs would be the right tool for
-> running the parameter sweep across many maps in parallel, which is the
-> obvious next step if the map suite grows.
+> **Token Factory — what I would fix**
 >
-> **NVIDIA models.** Nemotron 3 (Super 120B-A12B, and Nano 30B-A3B as the
-> cheaper option). The token cost of a full evaluation run is a fraction
-> of a cent, which made it cheap to iterate on the prompt and the
-> evaluation protocol.
+> The model IDs are spelled inconsistently across Nebius's own pages. I
+> found at least three spellings in circulation:
+> `nvidia/nemotron-3-super-120b-a12b`,
+> `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`, and
+> `nvidia/Nemotron-3.5-Super-VL`. The first one is not the one that
+> appears in the quickstart. A builder following the documentation in
+> order can end up with a 404 on their first call and no obvious way to
+> tell whether the problem is their code or the ID. My client now queries
+> `/models` at runtime and falls back through a candidate list on a 400 or
+> 404, but a canonical list — or a documented alias — would save everyone
+> that work. **Concrete suggestion: publish the exact IDs that
+> `/v1/models` returns for the Nemotron family in the quickstart, and
+> state whether the canonical form is the `nvidia/`-prefixed one.**
+>
+> Two smaller things. First, the `list-models` response is the only
+> reliable source of truth, and it is not mentioned in the quickstart —
+> worth one line. Second, there is no way to pin "the cheapest model that
+> can do this", so a builder comparing Super and Nano has to work it out
+> from the pricing table. A "recommended for cheap classification" note
+> per model would help.
+>
+> **What I would not claim.** The model did not beat a well-written
+> heuristic on this simulator, and my evaluation says so in a row anyone
+> can read. The tuning knowledge here is simple enough that a fixed rule
+> gets most of the way. The model's contribution is the **diagnosis and
+> the search direction**, not a large final margin. I would rather state
+> that plainly than have a judge find it — and on this project the
+> interesting version is not more parameters but more *systems*, where the
+> error sources have not been enumerated in advance.
+>
+> **AI Cloud — not used, and why that is a deliberate choice**
+>
+> The Physical AI track does not require deployment, and the project's
+> requirement is satisfied by the runtime Token Factory call rather than
+> by hosting. Deployment would have added a moving part without adding
+> evidence. Where it *would* earn its place is **Serverless Jobs**: the
+> parameter sweep across many maps is embarrassingly parallel, and running
+> the 125-combination sweep plus the 10-map generalisation suite as
+> background jobs would let the evaluation scale to hundreds of maps
+> without changing the code that does the measuring. That is the concrete
+> next step I would take, and it is why I mention Jobs specifically rather
+> than saying "I would use AI Cloud".
+>
+> **NVIDIA models**
+>
+> Nemotron 3 — Super 120B-A12B, with Nano 30B-A3B as the cheaper option
+> worth reaching for when the task is only "name the dominant error
+> source". A full evaluation run costs **a fraction of a cent**, which
+> made it cheap enough to iterate on the prompt and on the evaluation
+> protocol itself. That cheapness was the enabling condition for this
+> project: I could re-run the whole thing dozens of times while deciding
+> what "better" should even mean, and the measurement discipline in the
+> repository came out of that.
+>
+> **One thing I would want to know from other builders.** Has anyone found
+> a reliable way to make Nemotron output a strictly-typed parameter
+> proposal that can be validated against a schema? I used a
+> JSON-structured request plus clamping on my side, which works, but a
+> schema-enforced mode would remove a whole class of failure from the
+> "LLM in the loop" pattern.
+
+---
+
+## Appendix: the prizes this project is aiming at
+
+Listed on the hackathon page, in case it changes how the fields are
+weighted:
+
+| Prize | Amount | Relevance |
+|---|---|---|
+| Grand Prize | $20,000 | main award, four equal criteria |
+| Physical AI Track Winner | $20,000 + **NVIDIA Jetson Orin Nano** | this is the target track |
+| Most Valuable Feedback | **$100 × 10** + NVIDIA swag | **the feedback field, judged separately** |
+| City Winner Awards | $500 × 20 | only if you attended a Builders & Brews event |
+
+The feedback field being its own prize category is the reason the draft
+above is long and specific. A two-line "it worked fine" would be a wasted
+opportunity.
 
 ---
 

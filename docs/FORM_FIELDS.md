@@ -5,6 +5,26 @@
 > 的评奖内容 —— 规则原文：按 **completeness、viability、potential impact** 评估。
 > 所以别敷衍，写得越具体越有希望。
 
+## 哪些字段写短的，哪些写长的
+
+| 字段 | 用哪版 | 为什么 |
+|---|---|---|
+| 9. Demo URL | 留空 | 规则明说 Physical AI 不要求 |
+| **10. Which model(s)** | **短版（719 字符）** | 提示写着 "e.g., Nemotron-4 340B, Nemotron-Mini"——问的是事实，不是论述 |
+| 11. 输出质量评分 | 长版 | **反馈评奖内容** |
+| 12. fine-tune / prompt 工程 | 长版 | **反馈评奖内容** |
+| 13. 与其他模型对比 | 长版 | **反馈评奖内容** |
+| 14. 哪些 Nebius 能力最有用 | 长版 | **反馈评奖内容** |
+| 15. 推荐意愿评分 | 长版 | **反馈评奖内容** |
+| 16. 相比其他云的体验 | 长版 | **反馈评奖内容** |
+| 17. 想要什么改进 | 长版 | **反馈评奖内容** |
+| 18. 希望看到什么 | 长版 | **反馈评奖内容** |
+| 22. 用了哪些 AI 工具 | 中等 | 如实写，但别喧宾夺主 |
+| 其它（1-8、19-21、23-24） | 都很短 | 一两行的事 |
+
+**判断标准很简单**：字段提示里带 "e.g., ..." 的是事实题，短的；
+带 "Please share..." / "What worked well or fell short" 的是论述题，写长的。
+
 ---
 
 # ⬇️ 复制粘贴区 ⬇️
@@ -84,37 +104,35 @@ https://github.com/ASylviaofmine/nemotron-nav-agent/blob/master/docs/submission.
 
 ## 10. Which model(s) did you use, and why did you choose that size/variant?（必填）
 
+**用这个短版（719 字符）**。字段提示写着 "e.g., Nemotron-4 340B, Nemotron-Mini, etc."，
+问的是"哪个模型 + 为什么选这个尺寸"，不需要长篇。
+
 ```
-NVIDIA Nemotron 3 Super 120B-A12B, via Nebius Token Factory
-(nvidia/nemotron-3-super-120b-a12b).
+NVIDIA Nemotron 3 Super 120B-A12B (nvidia/nemotron-3-super-120b-a12b) via
+Nebius Token Factory.
 
-The task is to read a set of measured error metrics and name which error
-source dominates, then propose one clamped parameter change. That is a
-small, well-specified reasoning task with a short context -- metrics,
-current parameters, a numeric range for each knob -- so the bottleneck
-is instruction-following and numeric discipline rather than knowledge.
-Super 120B was chosen because the proposal has to be numerically sane:
-the whole design only works if a suggested change is legal, because
-anything out of range gets clamped and the suggestion is wasted.
+The task is small and well specified -- read measured error metrics, name
+which error source dominates, propose one clamped parameter change -- so
+the bottleneck is instruction-following and numeric discipline, not
+knowledge. Super was chosen because the proposal must be numerically
+legal: an out-of-range value gets clamped and the suggestion is wasted.
 
-The cost mattered too. A full evaluation run -- 3 rounds of diagnosis
-plus a 10-map generalisation suite -- is roughly 30 short calls, which
-at $0.30 / $0.90 per 1M input/output tokens costs a fraction of a cent.
-That is what made it cheap to iterate on the prompt and, more usefully,
-on the evaluation protocol itself: I could re-run the whole thing dozens
-of times while working out what "better" should even mean, and the
-measurement discipline in the repository came out of that.
-
-Nemotron 3 Nano 30B-A3B is the cheaper option and is the one I would
-reach for on a workload that only needs "name the dominant error source"
-without a structured numeric proposal. For this project, where the
-proposal has to survive clamping and produce a measurable improvement,
-Super was the right pick.
+The price decided it too: a full evaluation is about 30 short calls, a
+fraction of a cent, cheap enough to iterate on the prompt and the
+evaluation protocol. Nemotron 3 Nano 30B-A3B would be the right pick for a
+cheaper "name the error source" variant of this task.
 ```
+
+> **长版在这里不需要。** 原来那版 1200+ 字符是按"评奖反馈"写的，
+> 但这个字段是**事实性**的。真正需要长篇的是下面那几个反馈字段
+> （输出质量评分、与其他模型对比、想要什么改进）—— 那些才是
+> "Most Valuable Feedback" 评奖内容。
 
 ## 11. How would you rate Nemotron's output quality for your use case? (1-10)（必填）
 
 **评分：7**
+
+> 这个字段开始就是**反馈评奖内容**了，用长版。
 
 ```
 7/10 for this use case.
@@ -434,36 +452,31 @@ No
 
 ## 22. Which AI tools have you leveraged while working on this project?（必填）
 
+**用这个中等长度版（约 900 字符）**。这个字段是"列出来"的性质，
+写太长会喧宾夺主——但如实写比假装全程手写更可信。
+
 ```
-An AI coding assistant for the parts of the work where a language model
+An AI coding assistant, for the parts of the work where a language model
 is genuinely better than typing: reading unfamiliar code, restructuring
-files, and catching the kind of bug where a label and the value it
-prints disagree. The specific bug that comes to mind is the video
-renderer printing an *instantaneous* error under a label that said
-"max" -- I found that by looking at a rendered frame, not by reading
-the code, and an assistant was faster than a careful re-read.
+files, and hunting the kind of bug where a label and the value it prints
+disagree. The bug I remember is the video renderer printing an
+*instantaneous* error under a label that said "max" -- I found it by
+looking at a rendered frame, not by reading the code.
 
 What I deliberately did not delegate, because these are the parts that
-make the project credible:
-
-- The metric definition. Cross-track error had to be measured to the
-  planned polyline, and the first version measured to the nearest
-  waypoint -- which returns a near-constant that hides the effect of
-  every parameter. Deciding that was the single most important
-  judgement in the project, and it belonged to me.
-- The evaluation design: the no-model control row, the independent
-  exhaustive reference, and the self-test that checks the metric
-  implementation against an independent one.
-- Every number in the README. Each one is regenerated by a script, and
-  I ran them.
+make the project credible: the metric definition (cross-track error had
+to be measured to the planned polyline, not the nearest waypoint -- the
+wrong one hides the effect of every parameter); the evaluation design
+(the no-model control row, the independent exhaustive reference, the
+self-test); and every number in the README, each regenerated by a
+script that I ran.
 
 The pattern I ended up with: use the assistant for the mechanical parts
-and the search for the bug, keep the judgement and the evaluation
-design. The verification loop that makes this project defensible --
-"the model proposes, the simulator disposes" -- applies to my own work
-too. An assistant that suggested a change to the metric would have been
-as wrong as a model that proposed a bad parameter, and no amount of
-reading the output would have caught it.
+and the search for the bug, keep the judgement and the evaluation design.
+The same verification loop that makes this project defensible applies to
+my own work too -- an assistant that suggested a change to the metric
+would have been as wrong as a model that proposed a bad parameter, and
+reading the output would not have caught it.
 ```
 
 ## 23. Describe the level of learning you/your team derived from the project（下拉）

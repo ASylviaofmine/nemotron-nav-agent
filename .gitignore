@@ -14,9 +14,11 @@ venv/
 #   python main.py run --gif
 docs/*.mp4
 docs/*.gif
+docs/*.zip
 !docs/submission.mp4
 !docs/submission.gif
 !docs/demo.gif
+!docs/nemotron-nav-agent-submission.zip
 
 # Evaluation output
 results/

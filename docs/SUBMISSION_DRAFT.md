@@ -5,37 +5,61 @@ the code already exists and the numbers are the ones the scripts print.
 
 ---
 
-## Page 1 — Project overview
+# ⬇️ 复制粘贴区 ⬇️
 
-### Project name
-*(60 characters max)*
+> **这一整块就是表单要填的内容。** 灰色背景的框 = 直接复制。
+> 框下面的说明文字是给你看的，**不要复制**。
+
+## 字段 1 — Project name
 
 ```
 nemotron-nav-agent
 ```
 
-### Elevator pitch
-*(200 characters max — the one below is 185)*
+## 字段 2 — Elevator pitch
 
 ```
 A* plans the route, a proportional controller tracks it, and an NVIDIA Nemotron model on Nebius Token Factory supervises the controller's parameters, each change verified by re-running.
 ```
 
-> Three things in one sentence: the classical stack, the model, and the
-> verification. If you want it shorter, this also fits at 182 characters:
+## 字段 3 — Thumbnail image
+
+**上传文件**（不是粘贴文字）：`docs/thumbnail.png`
+
+## 字段 4 — Team
+
+```
+ASylviaofmine
+```
+
+# ⬆️ 复制粘贴区结束 ⬆️
+
+---
+
+## 字段说明（不用复制）
+
+### Project name
+60 字符上限，这个才 19 个。
+
+### Elevator pitch
+200 字符上限，这个是 185 个。
+
+一句话说了三件事：**经典栈**（A\* + 比例控制）、**模型**（Nemotron on
+Token Factory 负责监督参数）、**验证**（每次改动都要重跑确认）。
+最后半句 "each change verified by re-running" 是整个项目的核心论点，
+不能丢。
+
+> 备选（182 字符，更平铺直叙一些）：
 >
 > `A wheeled robot plans with A* and tracks with a proportional controller. An NVIDIA Nemotron model on Nebius Token Factory reads the measured error and proposes each parameter change.`
+>
+> 两个都合格。上面那个更好——它多说了"验证"。
 
 ### Thumbnail image
+视频里最有说服力的那一帧：基线和调优后并排，各自带一条实时误差曲线。
+它不用一个词就说清了"0.0895 m versus 0.0233 m"——这正是缩略图该干的事。
 
-**`docs/thumbnail.png`** in the repository — upload that file.
-
-It is the single most persuasive frame in the video: the baseline and the
-tuned run side by side, with the measured cross-track error plotted live
-under each one. It reads as *"0.0895 m versus 0.0233 m"* without a single
-word of explanation, which is exactly what a thumbnail has to do.
-
-*(Format: PNG. 1000×700, about 100 KB — well inside any upload limit.)*
+*(PNG 格式，1000×700，约 100 KB，远低于任何上传限制。)*
 
 ---
 
@@ -43,9 +67,8 @@ word of explanation, which is exactly what a thumbnail has to do.
 
 ### Team
 
-`ASylviaofmine` (solo). If you would rather submit as a team, add the
-members here before submitting — a team submission needs a designated
-Representative, and only the Representative can press the button.
+`ASylviaofmine`（个人参赛）。如果想组队，现在就加——团队提交需要指定
+Representative，而且只有 Representative 能按提交按钮。
 
 ---
 

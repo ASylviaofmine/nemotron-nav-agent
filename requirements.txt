@@ -1,11 +1,20 @@
-# Core numerics -- required for the simulator, the metrics and the benchmark.
+# Core numerics -- required for the simulator, the metrics, the evaluation
+# and the self-test. Nothing else is needed to reproduce every number in
+# the README:
+#
+#     pip install numpy
+#     python tools/selftest.py
+#     python tools/agent_eval.py
 numpy>=1.24
 
-# Visualisation. Optional: the demo (app.py) and the GIF recorder need
-# pygame and Pillow; the core pipeline, the evaluation and the self-test
-# run without them.
-pygame>=2.1
+# Visualisation. Pillow is used by the GIF recorder and by the video
+# renderer; OpenCV is only needed to write the MP4.
 Pillow>=10.0
 
-# The web demo. Optional.
+# The web demo (app.py). Optional.
 gradio>=4.0
+
+# The interactive pygame window (src/viewer.py). Optional and deliberately
+# last: it is the only thing in the project that needs it. The GIF
+# recorder, the video renderer and the web demo all work without it.
+pygame>=2.1

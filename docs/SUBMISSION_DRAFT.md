@@ -36,6 +36,108 @@ ASylviaofmine
 
 ---
 
+# ⬇️ Project details 页（第二页）复制粘贴区 ⬇️
+
+## 字段 5 — About the project（Project Story）
+
+**完整的 Project Story 在 `docs/PROJECT_STORY.md`** —— 打开那个文件，
+全选（Ctrl+A）、复制（Ctrl+C），粘贴到这里。
+
+它已经按 Devpost 给的模板分好节了：
+
+```
+## Inspiration
+## What it does
+## How we built it
+## Challenges we ran into
+## Accomplishments that we're proud of
+## What we learned
+## What's next for nemotron-nav-agent
+```
+
+粘贴后删掉模板里那些空的占位行（如果还有残留的 `##` 标题）。
+
+## 字段 6 — Built with（最多 25 个）
+
+逐个添加，**23 个**：
+
+```
+Python
+NumPy
+Pillow
+OpenCV
+Gradio
+NVIDIA Nemotron
+Nemotron 3 Super 120B
+Nebius Token Factory
+A* pathfinding
+Path planning
+Control theory
+Proportional control
+Robotics
+Robotics simulation
+Artificial Intelligence
+LLM
+Agent
+Evaluation
+Benchmarking
+Physical AI
+Simulation
+Automation
+```
+
+> 标签是评委和搜索系统看的关键词，所以把 "NVIDIA Nemotron"、
+> "Nebius Token Factory"、"Physical AI" 这些**精确的名字**写进去。
+> 别写没用到的技术（这个项目没用强化学习，也没用梯度下降）。
+
+## 字段 7 — Try it out links（必填）
+
+**第一个链接**（仓库）：
+
+```
+https://github.com/ASylviaofmine/nemotron-nav-agent
+```
+
+**第二个链接**（点 "ADD ANOTHER LINK"，视频）：
+
+```
+https://github.com/ASylviaofmine/nemotron-nav-agent/blob/master/docs/submission.mp4
+```
+
+> 规则里写了 demo URL 对 Physical AI **不要求**，但这个字段标着必填，
+> 所以至少填一条。仓库链接是最诚实的选择——它就是评委要"try it out"的东西。
+> 视频链接放第二条，因为它是这个项目**唯一能在浏览器里直接看**的东西。
+
+## 字段 8 — Image gallery（最多 15 张，5 MB 上限，3:2 比例）
+
+上传这 5 张（都已裁成 3:2，1000×666）：
+
+| 文件 | 内容 |
+|---|---|
+| `docs/gallery_title.png` | 标题卡 |
+| `docs/gallery_supervise.png` | **基线 vs 调优 + 实时误差曲线** ← 最重要 |
+| `docs/gallery_generalise.png` | 10 图套件条形图 |
+| `docs/gallery_decide.png` | 模型诊断 + 为什么停手 |
+| `docs/gallery_conclusion.png` | 结论表 + 穷举参照系 |
+
+**上传顺序很重要**：把 `gallery_supervise.png` 放**第一张**——
+它是唯一一张不用解释就能看懂"模型做了什么"的图。
+
+## 字段 9 — Demo video URL（必填）
+
+```
+（你的 YouTube 链接）
+```
+
+- 只能是 **YouTube 或 Vimeo**
+- **可见性设为 public 或 unlisted，不能设成 private**
+- 只有**前 3 分钟**会被看（你的视频 81 秒，全部都在前 3 分钟里）
+- Physical AI 要求**至少 1 分钟**展示关键模块动作 ← 81 秒达标
+
+# ⬆️ Project details 复制粘贴区结束 ⬆️
+
+---
+
 ## 字段说明（不用复制）
 
 ### Project name

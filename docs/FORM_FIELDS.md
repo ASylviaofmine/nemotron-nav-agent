@@ -31,10 +31,23 @@
 
 ## 1. Upload a File
 
-**可以留空。**（不是必填）
+## 1. Upload a File
 
-如果想上传，可以把仓库打包成一个 zip（我会帮你生成），
-让评委不用 clone 就能解压运行。**可选，不影响评审。**
+**上传这个文件**（不是必填，但值得上传）：
+
+```
+C:\Users\Lee\WorkBuddy\2026-10-21-22-18-37\nemotron-nav-agent\docs\nemotron-nav-agent-submission.zip
+```
+
+13.4 MB（限制 35 MB），48 个文件。**这是整个仓库的快照**，
+评委解压后 `pip install numpy && python tools/selftest.py` 就能跑，
+**不用 clone、不用进 GitHub**。
+
+已实测：解压到临时目录后自检通过，两个视频都在里面。
+
+> 为什么要传：规则里有一条"Judges are not required to test the Project"，
+> 但如果评委真的想跑，有个 zip 会省掉他注册账号和配环境的步骤。
+> **5 秒钟的事，胜算更高一点。**
 
 ## 2. Submitter Type（必填，下拉）
 

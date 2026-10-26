@@ -273,7 +273,16 @@ exists.
 | ---------- | ------------------------------------------------------ |
 | Repository | `https://github.com/ASylviaofmine/nemotron-nav-agent`  |
 | Demo URL   | *not required for the Physical AI track* — leave blank |
-| Video      | *your YouTube link*                                    |
+| Video      | `https://youtu.be/tbjcAWZghYo`                         |
+
+> **Video URL 用 `youtu.be` 短链还是完整链接？** 两个都能用，YouTube 会自动
+> 互相跳转。完整链接更保险（评委复制粘贴时不会漏掉 `?t=` 之类的参数）：
+>
+> ```
+> https://www.youtube.com/watch?v=tbjcAWZghYo
+> ```
+>
+> 短链更清爽。**用上面表格里的短链就行**，它一定能打开。
 
 ---
 

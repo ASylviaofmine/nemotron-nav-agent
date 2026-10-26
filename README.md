@@ -26,11 +26,14 @@ natural-language task
    keep the change only if the measured numbers improved
 ```
 
-**Video:** the submission video is in this repository as
-`docs/submission.mp4` (about 80 seconds, also playable as
-`docs/submission.gif`). It shows A\* finding the route, the baseline and
-the tuned run side by side with the error plotted live, the map suite, and
-the model's own diagnosis next to the measurement that proved it right.
+**Video:** **[watch it on YouTube](https://youtu.be/tbjcAWZghYo)** — 81 seconds.
+
+It shows A\* finding the route, the baseline and the tuned run side by side with
+the error plotted live, the map suite, and the model's own diagnosis next to the
+measurement that proved it right. English subtitles are burned in.
+
+The same file is in this repository as `docs/submission-subtitled.mp4`, and the
+animation alone is `docs/submission.gif` if you would rather not open YouTube.
 
 ![the supervision loop, side by side](docs/submission.gif)
 

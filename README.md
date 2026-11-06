@@ -41,6 +41,8 @@ Built for the [Nebius Global AI Hackathon](https://nebiusglobalaihackathon.devpo
 (Physical AI track). The inference calls in this project run on **Nebius
 Token Factory** against an **NVIDIA Nemotron** model, as the rules require.
 
+**Project page:** [devpost.com/software/nemotron-nav-agent](https://devpost.com/software/nemotron-nav-agent)
+
 ---
 
 ## Why this project is not a chatbot in front of a simulator
